@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>贪吃蛇</title>
+        <style media="screen">
+            body {
+                display: flex;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="400" height="400" style="background: black">对不起，您的浏览器不支持canvas</canvas>
+        <script>
+            let snake = [41, 40], // 蛇数组
+                direction = 1,
+                food = 43,
+                n, // 蛇头下一步位置
+                box = document.querySelector('#canvas').getContext('2d');
+            function draw(seat, color) {
+                box.fillStyle = color;
+                box.fillRect(seat % 20 * 20 + 1, ~~(seat / 20) * 20 + 1, 18, 18); // ~相当于取整相反数-1，~~则相当于取整，这是最底层的操作，速度更快
+            }
+            document.onkeydown = function(evt) {
+                console.log(evt.keyCode) // 左箭头37 上38 右39 下40
+                // 优先级 = < 三元 < || < && < === < - < %
+                direction = snake[1] - snake[0] === (n = [-1, -20, 1, 20][(evt || event).keyCode - 37] || direction) ? direction : n;
+            };
+            !function() { // 立即执行函数
+                snake.unshift(n = snake[0] + direction);
+                if(snake.indexOf(n, 1) > 0 || n < 0 || n > 399 || direction === 1 && n % 20 === 0 || direction === -1 && n % 20 === 19) {
+                    return alert("GAME OVER!");
+                }
+                draw(n, "lime"); // 蛇头前进一格
+                if(n === food) {
+                    while(snake.indexOf(food = ~~(Math.random() * 400)) > 0);
+                    draw(food, "yellow"); // 绘制食物
+                } else {
+                    draw(snake.pop(), "black"); // 蛇尾消失
+                }
+                setTimeout(arguments.callee, 150); // arguments.callee 指向拥有arguments对象的函数
+            }();
+        </script>
+    </body>
+</html>
