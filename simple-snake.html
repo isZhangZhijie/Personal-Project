@@ -17,9 +17,9 @@
     <body>
         <canvas id="canvas" width="400" height="400" style="background: black">对不起，您的浏览器不支持canvas</canvas>
         <script>
-            let snake = [41, 40], // 蛇数组
+            let snake = [41, 40], // 蛇数组，取值是0-399，20x20个格子
                 direction = 1,
-                food = 43,
+                food = 43, // 食物位置
                 n, // 蛇头下一步位置
                 box = document.querySelector('#canvas').getContext('2d');
             function draw(seat, color) {
